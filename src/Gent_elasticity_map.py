@@ -139,7 +139,7 @@ def main(refData, network):
         )
 
     def output_transform(x, y):
-        Nux, Nuy, NE = y[:, 0:1], y[:, 1:2], y[:, 2:3]
+        Nux, Nuy, Nmu = y[:, 0:1], y[:, 1:2], y[:, 2:3]
         Pxx, Pyy, Pxy, Pyx = y[:, 3:4], y[:, 4:5], y[:, 5:6], y[:, 6:7]
 
         Nux = Nux * ux_std + ux_mean
@@ -153,7 +153,7 @@ def main(refData, network):
             Nuy = x[:, 1:2] * Nuy - 0.2
             Nuy = (1 - x[:, 1:2]) * Nuy + x[:, 1:2] * 0.2
 
-        NE = 1 + 4 * torch.sigmoid(NE)
+        Nmu = 1 + 4 * torch.sigmoid(Nmu)
 
         duxdx = dde.grad.jacobian(Nux, x, i=0, j=0)
         duydy = dde.grad.jacobian(Nuy, x, i=0, j=1)
@@ -170,7 +170,7 @@ def main(refData, network):
         Exy = 0.5 * (Fxx * Fyx + Fxy * Fyy)
 
         return torch.concat(
-            [Nux, Nuy, NE, Fxx, Fyy, Fxy, Fyx, Exx, Eyy, Exy, Pxx, Pyy, Pxy, Pyx],
+            [Nux, Nuy, Nmu, Fxx, Fyy, Fxy, Fyx, Exx, Eyy, Exy, Pxx, Pyy, Pxy, Pyx],
             axis=1,
         )
 
@@ -246,38 +246,32 @@ def plot_data(refData):
     X, Y = np.meshgrid(x, y)
 
     ground_truth = np.load(refData, allow_pickle="TRUE")
-    gt_coor, gt_elasticity_map = (
+    gt_coor, gt_mu_map = (
         ground_truth.item()["nodal_coor"],
         ground_truth.item()["property_map"],
     )
 
     PINN = np.load("PINN_Prediction.npy", allow_pickle=True)
-    pinn_coor, pinn_elasticity_map = (
+    pinn_coor, pinn_mu_map = (
         PINN.item()["Coor"],
         PINN.item()["PINN output"][:, 2],
     )
 
-    print(pinn_coor.shape, pinn_elasticity_map.shape)
+    print(pinn_coor.shape, pinn_mu_map.shape)
 
-    gt_elasticity_map = griddata(
-        gt_coor[:, 0:2], gt_elasticity_map, (X, Y), method="cubic"
-    )
-    pinn_elasticity_map = griddata(
-        pinn_coor, pinn_elasticity_map.reshape(-1), (X, Y), method="cubic"
-    )
+    gt_mu_map = griddata(gt_coor[:, 0:2], gt_mu_map, (X, Y), method="cubic")
+    pinn_mu_map = griddata(pinn_coor, pinn_mu_map.reshape(-1), (X, Y), method="cubic")
 
     print(
         "Young's modulus L2 relative error (%): ",
-        np.linalg.norm(gt_elasticity_map - pinn_elasticity_map)
-        / np.linalg.norm(gt_elasticity_map)
-        * 100,
+        np.linalg.norm(gt_mu_map - pinn_mu_map) / np.linalg.norm(gt_mu_map) * 100,
     )
 
     fig, axes = plt.subplots(1, 3, figsize=(10.5, 2.75))
 
     ax = axes[0]
     im0 = ax.imshow(
-        gt_elasticity_map,
+        gt_mu_map,
         interpolation="nearest",
         extent=[0, 1, 0, 1],
         origin="lower",
@@ -288,19 +282,19 @@ def plot_data(refData):
         im0,
         ax=ax,
         ticks=[
-            np.min(gt_elasticity_map),
-            (np.max(gt_elasticity_map) + np.min(gt_elasticity_map)) / 2,
-            np.max(gt_elasticity_map),
+            np.min(gt_mu_map),
+            (np.max(gt_mu_map) + np.min(gt_mu_map)) / 2,
+            np.max(gt_mu_map),
         ],
         format="%.2f",
     )
     ax.set_xticks([])
     ax.set_yticks([])
-    ax.set_title(r"$E$")
+    ax.set_title(r"$\mu$")
 
     ax = axes[1]
     im1 = ax.imshow(
-        pinn_elasticity_map,
+        pinn_mu_map,
         interpolation="nearest",
         extent=[0, 1, 0, 1],
         origin="lower",
@@ -311,18 +305,18 @@ def plot_data(refData):
         im1,
         ax=ax,
         ticks=[
-            np.min(pinn_elasticity_map),
-            (np.max(pinn_elasticity_map) + np.min(pinn_elasticity_map)) / 2,
-            np.max(pinn_elasticity_map),
+            np.min(pinn_mu_map),
+            (np.max(pinn_mu_map) + np.min(pinn_mu_map)) / 2,
+            np.max(pinn_mu_map),
         ],
         format="%.2f",
     )
     ax.set_xticks([])
     ax.set_yticks([])
-    ax.set_title(r"$E^*$")
+    ax.set_title(r"$\mu^*$")
 
     ax = axes[2]
-    abs_error = np.abs(gt_elasticity_map - pinn_elasticity_map)
+    abs_error = np.abs(gt_mu_map - pinn_mu_map)
     max_error = np.max(abs_error)
     min_error = np.min(abs_error)
     im2 = ax.imshow(
@@ -341,10 +335,10 @@ def plot_data(refData):
     )
     ax.set_xticks([])
     ax.set_yticks([])
-    ax.set_title(r"|$E$ - $E^*$|")
+    ax.set_title(r"|$\mu$ - $\mu^*$|")
 
     plt.tight_layout()
-    plt.savefig("compare_E.pdf")
+    plt.savefig("compare_mu.pdf")
 
 
 if __name__ == "__main__":
