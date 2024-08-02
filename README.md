@@ -25,9 +25,9 @@ If you use this data or code for academic research, you are encouraged to cite t
   author={Wensi Wu and Mitchell Daneker and Kevin T. Turner and Matthew A. Jolley and Lu Lu},
   journal = {Small Methods},
   volume  = {},
-  pages   = {},
-  year    = {},
-  doi     = {}
+  pages   = {2400620},
+  year    = {2004},
+  doi     = {https://doi.org/10.1002/smtd.202400620}
 }
 ```
 
