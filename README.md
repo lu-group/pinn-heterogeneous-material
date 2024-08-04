@@ -1,6 +1,6 @@
 > Under Construction
 
-# Physics-informed neural networks for determining heterogeneous mechanical properties of biological tissues
+# Determining heterogeneous mechanical properties of biological tissues via PINNs
 
 The data and code for the paper [W. Wu, M. Daneker, K. T. Turner, M. A. Jolley, & L. Lu. Identifying heterogeneous micromechanical properties of biological
 tissues via physics-informed neural networks. *arXiv preprint arXiv:2402.10741*, 2024](https://arxiv.org/abs/2402.10741).
