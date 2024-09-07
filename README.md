@@ -26,8 +26,8 @@ If you use this data or code for academic research, you are encouraged to cite t
 
 ```
 @article{wu2024heterogeneousmaterial,
-  author={Wensi Wu and Mitchell Daneker and Kevin T. Turner and Matthew A. Jolley and Lu Lu},
-  title={Identifying heterogeneous micromechanical properties of biological tissues via physics-informed neural networks}, 
+  author  = { Wensi Wu and Mitchell Daneker and Kevin T. Turner and Matthew A. Jolley and Lu Lu},
+  title.  = {Identifying heterogeneous micromechanical properties of biological tissues via physics-informed neural networks}, 
   journal = {Small Methods},
   year    = {2004},
   doi     = {https://doi.org/10.1002/smtd.202400620}
