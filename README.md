@@ -3,7 +3,7 @@
 # Determining heterogeneous mechanical properties of biological tissues via PINNs
 
 The data and code for the paper [W. Wu, M. Daneker, K. T. Turner, M. A. Jolley, & L. Lu. Identifying heterogeneous micromechanical properties of biological
-tissues via physics-informed neural networks. *Small Methods*, 9 (1), 2400620, 2025.](https://doi.org/10.1002/smtd.202400620).
+tissues via physics-informed neural networks. *Small Methods*, 9 (1), 2400620, 2025](https://doi.org/10.1002/smtd.202400620).
 
 ## Data
 All data are in the folder [data](data). The first word in the file name indicates the example name, and the last word before ".npy" indicates the constitutive model name. For example, "GRF_equi_disp0.4_neo.npy" contains data for the Gaussian random field example generated using the Neo-Hookean material model. 
@@ -30,7 +30,6 @@ If you use this data or code for academic research, you are encouraged to cite t
   title   = {Identifying heterogeneous micromechanical properties of biological tissues via physics-informed neural networks}, 
   journal = {Small Methods},
   volume  = {9},
-  number   = {1},
   number  = {1},
   pages   = {2400620},
   year    = {2025},
