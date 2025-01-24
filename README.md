@@ -25,7 +25,7 @@ python NeoHookean_elasticity_map.py --data ../data/GRF_equi_disp0.4_neo.npy --ne
 If you use this data or code for academic research, you are encouraged to cite the following paper:
 
 ```
-@article{wu2024heterogeneousmaterial,
+@article{wu2025heterogeneousmaterial,
   author  = {Wensi Wu and Mitchell Daneker and Kevin T. Turner and Matthew A. Jolley and Lu Lu},
   title   = {Identifying heterogeneous micromechanical properties of biological tissues via physics-informed neural networks}, 
   journal = {Small Methods},
