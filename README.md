@@ -32,7 +32,7 @@ If you use this data or code for academic research, you are encouraged to cite t
   volume  = {9},
   issue   = {1},
   pages   = {2400620},
-  year    = {2005},
+  year    = {2025},
   doi     = {https://doi.org/10.1002/smtd.202400620}
 }
 ```
